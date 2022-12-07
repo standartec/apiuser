@@ -3,7 +3,7 @@ import { ResultDTO } from 'src/result.dto';
 import { Repository } from 'typeorm';
 import { UserAddDTO } from './dto/user.create.dto';
 import { Users } from './users.entity';
-
+import * as bcrypt from 'bcrypt'
 @Injectable()
 export class UsersService {
   constructor(
@@ -22,7 +22,7 @@ export class UsersService {
     user.created_on = 1268889823
     user.company = data.company
     user.ip_address = 1
-    user.password = data.password
+    user.password = bcrypt.hashSync(data.password, 8) 
     user.phone = data.phone
     console.log("Call Service")
     console.log(user)
@@ -41,4 +41,10 @@ export class UsersService {
   
 
   }
+
+  async findOne(email: string): Promise<Users | undefined> {
+    return this.usersRepository.findOneBy({email:email});
+  }
+
+
 }
