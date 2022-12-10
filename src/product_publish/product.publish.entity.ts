@@ -1,29 +1,30 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('publish')
+@Entity('product_publish')
 export default class ProductPublish {
 
     @PrimaryGeneratedColumn()
     id: string;
 
     @Column()
-    description: string;
+    id_product_customer: number;
+
+    @Column()
+    id_publish: number;
+
+    @Column()
+    product_price: number;
 
     @Column()
     date: Date;
 
     @Column()
-    id_user: number;
-
-    @Column()
-    id_template: number;
-
-    @Column()
     status: number;
 
     @Column()
-    header2: string;
+    dt_status: Date;
 }
+
 
 function PrimaryColumn() {
   throw new Error("Function not implemented.");

@@ -1,7 +1,8 @@
+import { IncludeProductPublishDTO } from './dto/include.product.publish.dto';
 import { Injectable, Inject } from '@nestjs/common';
 import { ResultDTO } from 'src/result.dto';
-import { Repository } from 'typeorm';
-//import { UserAddDTO } from './dto/user.create.dto';
+import { Repository,EntityRepository,getManager } from 'typeorm';
+
 import Publish from './publish.entity';
 import * as bcrypt from 'bcrypt'
 @Injectable()
@@ -17,11 +18,52 @@ export class PublishService {
 
   
 
-  
-/*
-  async findOne(email: string): Promise<Users | undefined> {
-    return this.usersRepository.findOneBy({email:email});
-  }
-*/
+  public async getUserPublish(idUser: string): Promise<undefined[]> {
+
+   //console.log(idUser)
+   /*
+    if (idProductPublish != '0') {
+        filterProduct = ' and pp.id = ' + idProductPublish;
+    }*/
+
+    const productFlyer = await this.publishRepository.query(`
+    select ud.company_name as company_name, p.id as id, us.id id_user, p.id as id_publish_sh, t.header_image, t.footer_image, t.complete_image complete_image,p.description description,p.description description_publish, date_format(p.date, '%d/%m/%Y') dates_creation,t.id id_template
+        from  publish p inner join template t on p.id_template = t.id 
+        inner join users us on us.id = p.id_user
+        left join user_detail ud on ud.id_user = us.id
+        where p.status = 1 and p.id_user = ` + idUser );
+
+    return productFlyer
+
+}
+
+public async getProductPublish(idPublish) {
+
+  const sql = await this.publishRepository.query(`select pc.id,p.description,pc.id_product,prod.name,pp.product_price price,prod.image_link, pp.id_publish, pp.id as id_product_publish,
+  p.id_user as id_user_publish, p.header2, prod.image_width, prod.image_height
+  from product_publish pp inner join publish p on p.id = pp.id_publish
+inner join product_customer pc on pc.id = pp.id_product_customer
+inner join products prod on prod.id = pc.id_product
+where  pp.status =  1 and p.id = ` + idPublish + ` order by pp.id desc`)
+  return sql
+
+}
+
+public async getProductUser (iduser, idPublish, name) {
+  const sql = `
+  select p.name,pc.id,pc.price,p.image_link  from product_customer pc inner join products p on p.id = pc.id_product
+        where pc.id_user = ` + iduser + `
+        and pc.id not in (select pc.id from product_publish pp inner join publish p on p.id = pp.id_publish
+        inner join product_customer pc on pc.id = pp.id_product_customer
+        inner join products prod on prod.id = pc.id_product
+        where pp.status = 1 and p.id = `+ idPublish +`) and p.status = 1 and upper(p.name) like '%` + name + `%' order by p.name
+  `
+  console.log(sql)
+  const ret =  await this.publishRepository.query(sql)
+
+  return ret
+}
+
+
 
 }

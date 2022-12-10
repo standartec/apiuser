@@ -1,3 +1,4 @@
+import { ProductPublishModule } from './../product_publish/product.publish.module';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from 'src/user/users.module';
@@ -15,6 +16,7 @@ import { PublishModule } from 'src/publish/publish.module';
     PassportModule,
     TokenModule,
     PublishModule,
+    ProductPublishModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },
