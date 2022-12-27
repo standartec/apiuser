@@ -6,15 +6,15 @@ export const databaseProviders = [
     useFactory: async () => {
       const dataSource = new DataSource({
         type: 'mysql',
-        //host: 'onecart.mysql.dbaas.com.br',
-        //port: 3306,
-        //username: 'onecart',
-        //password: 'Fr48915199',
+        host: 'onecart.mysql.dbaas.com.br',
+        port: 3306,
+        username: 'onecart',
+        password: 'Fr48915199',
         //database: 'onecart',
-        host: 'localhost',
-        port: 8889,
-        username: 'root',
-        password: 'root',
+       // host: 'localhost',
+       // port: 8889,
+       // username: 'root',
+      //  password: 'root',
         database: 'onecart',
         entities: [
             __dirname + '/../**/*.entity{.ts,.js}',

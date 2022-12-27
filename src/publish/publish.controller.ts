@@ -1,3 +1,4 @@
+import { IncludePublishDTO } from './dto/include.publish.dto';
 import { Body, Controller, Get, Post, UseGuards,Request, Param } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
@@ -36,21 +37,21 @@ export class PublishController {
     return this.publishService.getProductUser(params.idUser,params.idPublish,params.name)
   }
 
-  /*
-  @Post('add')
-  async add(@Body() data:UserAddDTO): Promise<any> {
-    
-    return this.usersService.add(data)
+  @Get('getTemplate/:idUser')
+  async getTemplate (@Param('idUser') idUser): Promise<undefined[]> {
+
+    return this.publishService.getTemplate(idUser)
+
+  }
+
+  @Post('includePublish')
+  async includePublish(@Body() data:IncludePublishDTO): Promise<any> {
+    console.log("Controller")
+    console.log(data)
+    return this.publishService.includePublish(data)
  
-   
   }
 
-  @UseGuards(AuthGuard('local'))
-  @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
 
-   // return req.user;
-  }
-  */
+
 }
