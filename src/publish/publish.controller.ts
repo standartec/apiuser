@@ -8,7 +8,7 @@ import { ResultDTO } from 'src/result.dto';
 import  Publish  from './publish.entity';
 import { PublishService } from './publish.service';
 
-@Controller('publish')
+@Controller('publish_api')
 export class PublishController {
   constructor(private readonly publishService: PublishService,
     private authService: AuthService) {}
